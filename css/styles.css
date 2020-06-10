@@ -1,0 +1,32 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+h2 {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 72px;
+    line-height: 79px;   
+    color: #373A3C;
+}
+
+h5 {
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 24px;
+    
+    color: #373A3C;
+}
+
+.input {
+    width: 86px;
+    height: 38px;
+    border-radius: 4px;
+    border: 1px solid #CCCCCC;
+}
