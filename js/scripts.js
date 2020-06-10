@@ -10,3 +10,6 @@ const fibonacciNumber = (num) => {
 };
 
 console.log(fibonacciNumber(5));
+
+document.querySelector(".number").innerHTML = 5;
+document.querySelector(".result").innerHTML = fibonacciNumber(5);
