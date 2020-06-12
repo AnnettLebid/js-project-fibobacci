@@ -21,6 +21,7 @@ function calcFibNumber() {
     let number = getUserInput();
     if (number > 50) {
       document.getElementById("alert-box").classList.add("visibility");
+      document.getElementById("input").classList.add("border-red");
       loaderOff();
       return false;
     } else {

@@ -114,3 +114,7 @@ h5 {
 .visibility {
     visibility: visible;
 }
+
+.border-red {
+    border: 1px solid #D9534F;
+}
