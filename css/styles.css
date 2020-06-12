@@ -93,6 +93,7 @@ h5 {
 
 
 .alert-box {
+    visibility: hidden;
     position: absolute;
     width: 180px;
     height: 33px;
@@ -108,4 +109,8 @@ h5 {
     align-items: flex-end;
 
     color: #A94442;
+}
+
+.visibility {
+    visibility: visible;
 }
