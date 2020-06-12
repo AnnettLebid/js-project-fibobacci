@@ -40,3 +40,47 @@ h5 {
     text-decoration-line: underline;
     color: #373A3C;
 }
+
+
+.loader-ring {
+    display: none;
+    position: absolute;  
+    left: 350px;
+    top: -66px;
+    position: relative;
+    width: 52px;
+    height: 52px;
+  }
+  .loader-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    margin: 8px;
+    border: 6px solid black;
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color:black transparent transparent transparent;
+  }
+  .loader-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  .loader-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .loader-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+  @keyframes lds-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .show {
+      display: inline-block;
+  }
