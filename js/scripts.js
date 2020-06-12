@@ -13,9 +13,6 @@ function loaderOff() {
   loader.classList.remove("show");
 }
 
-function showAlertBox() {
-  document.getElementById(alert - box).classList.add("d-inline");
-}
 
 function calcFibNumber() {
   let btn = document.getElementById("button");
