@@ -16,14 +16,14 @@ function loaderOff() {
 function calcFibNumber() {
   let btn = document.getElementById("button");
   btn.addEventListener("click", function () {
-    loader.classList.add("show");
+    loaderOn();
     let number = getUserInput();
     fetch(`http://localhost:5050/fibonacci/${number}`)
       .then((response) => response.json())
       .then(function (data) {
-        (document.getElementById("result").innerText = data.result);
-        loader.classList.remove("show");
-      });    
+        document.getElementById("result").innerText = data.result;
+        loaderOff();
+      });
   });
 }
 
