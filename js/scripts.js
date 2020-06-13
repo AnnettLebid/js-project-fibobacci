@@ -33,9 +33,8 @@ function calcFibNumber() {
       loaderOff();
       return false;
     } else {
-      fetch(`http://localhost:5050/fibonacci/${number}`).then(function (
-        response
-      ) {
+      fetch(`http://localhost:5050/fibonacci/${number}`)
+      .then(function (response) {
         if (response.ok) {
           return response.json().then(function (data) {
             document.getElementById("result").innerText = data.result;
@@ -43,9 +42,7 @@ function calcFibNumber() {
           });
         } else {
           response.text().then((text) => {
-            document.querySelector(
-              ".server-error"
-            ).innerHTML = `Server error: ${text}`;
+            document.querySelector(".server-error").innerHTML = `Server error: ${text}`;
             loaderOff();
           });
         }
@@ -54,7 +51,7 @@ function calcFibNumber() {
   });
 }
 
-calcFibNumber();
+
 
 function getServerFibResults() {
   resultsLoaderOn();
@@ -63,7 +60,7 @@ function getServerFibResults() {
     .then((data) => {
       let { results } = data;
 
-      results = results.splice(0, 10);
+      results = results.splice(0, 5);
 
       let list = document.querySelector(".results-list");
 
@@ -78,6 +75,7 @@ function getServerFibResults() {
     });
   
 }
-console.log("hello");
+
 
 getServerFibResults();
+calcFibNumber();
