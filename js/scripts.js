@@ -1,7 +1,6 @@
 const loader = document.querySelector(".loader-ring");
 const resultsLoader = document.querySelector(".results-loader-ring");
 const checkBox = document.getElementById("checkbox");
-console.log(checkBox.checked);
 
 function getUserInput() {
   let userInput = document.getElementById("input").value;
@@ -47,12 +46,14 @@ function serverCalcFibNum() {
     fetch(`http://localhost:5050/fibonacci/${number}`)    
     .then(function (response) {
       if (response.ok) {
-        return response.json().then(function (data) {
+        return response.json()
+        .then(function (data) {
           document.getElementById("result").innerText = data.result;
           loaderOff();
         });
       } else {
-        response.text().then((text) => {
+        response.text()
+        .then((text) => {
           document.querySelector(".server-error")
           .innerHTML = `Server error: ${text}`;
           loaderOff();
