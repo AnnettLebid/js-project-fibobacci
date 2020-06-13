@@ -1,4 +1,5 @@
 const loader = document.querySelector(".loader-ring");
+const resultsLoader = document.querySelector(".results-loader-ring");
 
 function getUserInput() {
   let userInput = document.getElementById("input").value;
@@ -13,6 +14,14 @@ function loaderOff() {
   loader.classList.remove("show");
 }
 
+function resultsLoaderOn() {
+  resultsLoader.classList.add("show");
+}
+
+function resultsLoaderOff() {
+  resultsLoader.classList.remove("show");
+}
+
 function calcFibNumber() {
   let btn = document.getElementById("button");
   btn.addEventListener("click", function () {
@@ -24,8 +33,9 @@ function calcFibNumber() {
       loaderOff();
       return false;
     } else {
-      fetch(`http://localhost:5050/fibonacci/${number}`).
-      then(function (response) {
+      fetch(`http://localhost:5050/fibonacci/${number}`).then(function (
+        response
+      ) {
         if (response.ok) {
           return response.json().then(function (data) {
             document.getElementById("result").innerText = data.result;
@@ -47,6 +57,7 @@ function calcFibNumber() {
 calcFibNumber();
 
 function getServerFibResults() {
+  resultsLoaderOn();
   fetch(`http://localhost:5050/getFibonacciResults`)
     .then((response) => response.json())
     .then((data) => {
@@ -57,14 +68,15 @@ function getServerFibResults() {
       let list = document.querySelector(".results-list");
 
       for (key in results) {
-        list.innerHTML += 
-        `<li class = "list-style">The Fibonacci of: 
+        list.innerHTML += `<li class = "list-style">The Fibonacci of: 
         <b>${results[key].number}</b> 
         is <b>${results[key].result}</b>. 
         Calculated at:
          ${new Date(results[key].createdDate)}</li>`;
       }
+      resultsLoaderOff();
     });
+  
 }
 console.log("hello");
 
