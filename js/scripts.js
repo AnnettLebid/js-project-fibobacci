@@ -24,9 +24,8 @@ function calcFibNumber() {
       loaderOff();
       return false;
     } else {
-      fetch(`http://localhost:5050/fibonacci/${number}`).then(function (
-        response
-      ) {
+      fetch(`http://localhost:5050/fibonacci/${number}`).
+      then(function (response) {
         if (response.ok) {
           return response.json().then(function (data) {
             document.getElementById("result").innerText = data.result;
@@ -34,7 +33,9 @@ function calcFibNumber() {
           });
         } else {
           response.text().then((text) => {
-            document.querySelector(".server-error").innerHTML = `Server error: ${text}`;            
+            document.querySelector(
+              ".server-error"
+            ).innerHTML = `Server error: ${text}`;
             loaderOff();
           });
         }
@@ -45,20 +46,26 @@ function calcFibNumber() {
 
 calcFibNumber();
 
-function getServerFibResults() {  
+function getServerFibResults() {
   fetch(`http://localhost:5050/getFibonacciResults`)
-  .then(response => response.json())
-  .then(data => {
-    const {results} = data;
-    console.log(results); 
-  })
+    .then((response) => response.json())
+    .then((data) => {
+      let { results } = data;
+
+      results = results.splice(0, 10);
+
+      let list = document.querySelector(".results-list");
+
+      for (key in results) {
+        list.innerHTML += 
+        `<li class = "list-style">The Fibonacci of: 
+        <b>${results[key].number}</b> 
+        is <b>${results[key].result}</b>. 
+        Calculated at:
+         ${new Date(results[key].createdDate)}</li>`;
+      }
+    });
 }
+console.log("hello");
 
 getServerFibResults();
-
-
-
-
-
-
-

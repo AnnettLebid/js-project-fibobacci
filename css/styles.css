@@ -5,23 +5,19 @@ body {
     padding: 0;
     box-sizing: border-box;
     font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
 }
 
 h2 {
-    font-family: Open Sans;
-    font-style: normal;
-    font-weight: normal;
     font-size: 72px;
     line-height: 79px;
     color: #373A3C;
 }
 
 h5 {
-    font-style: normal;
-    font-weight: normal;
     font-size: 24px;
     line-height: 24px;
-
     color: #373A3C;
 }
 
@@ -33,7 +29,6 @@ h5 {
 }
 
 .result {
-    font-style: normal;
     font-weight: bold;
     font-size: 24px;
     line-height: 24px;
@@ -99,8 +94,6 @@ h5 {
     left: 115px;
     top: 150px;
 
-    font-style: normal;
-    font-weight: normal;
     font-size: 16px;
     line-height: 24px;
 
@@ -123,8 +116,6 @@ h5 {
     left: 350px;
     top: 97px;
     padding: 5px;
-    font-style: normal;
-    font-weight: normal;
     font-size: 16px;
     line-height: 24px;
     /* identical to box height, or 150% */
@@ -134,4 +125,27 @@ h5 {
 
     color: #D9534F;
 
+}
+
+.results-title {
+    margin-top: 80px;
+    margin-bottom: 36px;
+    font-size: 54px;
+    line-height: 72px;
+    /* identical to box height, or 133% */
+    display: flex;
+    align-items: flex-end;
+
+    color: #373A3C;
+}
+
+.list-style {
+    font-size: 24px;
+    line-height: 24px;
+    border-bottom: 1px solid black;
+    margin-top: 6px;
+    padding: 18px 18px 18px 0;
+    list-style-type: none;
+    /* identical to box height, or 100% */
+    color: #373A3C;
 }
