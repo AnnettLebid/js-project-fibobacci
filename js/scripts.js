@@ -34,7 +34,7 @@ function calcFibNumber() {
           });
         } else {
           response.text().then((text) => {
-            console.log(text);
+            document.querySelector(".server-error").innerHTML = `Server error: ${text}`;            
             loaderOff();
           });
         }
