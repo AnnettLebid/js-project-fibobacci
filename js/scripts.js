@@ -35,17 +35,15 @@ function localCalcFibNum(num) {
   document.getElementById("result").innerText = result;
 }
 
-function serverCalcFibNum() {
-  let number = getUserInput();
-  if (number > 50) {
+function serverCalcFibNum(num) {  
+  if (num > 50) {
     document.getElementById("alert-box").classList.add("visibility");
     document.getElementById("input").classList.add("border-red");
     return false;
   } else {
     spinnerOn();
-    fetch(`http://localhost:5050/fibonacci/${number}`).then(function (
-      response
-    ) {
+    fetch(`http://localhost:5050/fibonacci/${num}`)
+    .then(function (response) {
       if (response.ok) {
         response.json().then(function (data) {
           document.getElementById("result").innerText = data.result;
@@ -63,17 +61,19 @@ function serverCalcFibNum() {
   }
 }
 
+
 function handleOnButtonClick() {
   let btn = document.getElementById("button");
   btn.addEventListener("click", () => {
     let number = getUserInput();
     if (checkBox.checked) {
-      serverCalcFibNum();
+      serverCalcFibNum(number);
     } else {
       localCalcFibNum(number);
     }
   });
 }
+
 
 function getServerFibResults() {
   resultsSpinnerOn();
@@ -86,7 +86,7 @@ function getServerFibResults() {
       results = results.splice(results.length - 10, results.length);
       for (element of results) {
         let newElement = createLiElement(element);
-        console.log(newElement)
+        console.log(newElement);
         resultsList.appendChild(newElement);
       }
       resultsSpinnerOff();
@@ -123,5 +123,7 @@ function createLiElement(element) {
   wrapperDiv.append(divFib, divNumber, divIs, divResult, divCalc, divDate);
   return wrapperDiv;
 }
+
+
 getServerFibResults();
 handleOnButtonClick();
