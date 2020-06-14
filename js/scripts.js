@@ -1,10 +1,10 @@
 const spinner = document.getElementById("spinner");
-const resultsSpinner = document.querySelector("results-spinner");
+const resultsSpinner = document.getElementById("results-spinner");
 const checkBox = document.getElementById("checkbox");
 
 function getUserInput() {
-  let userInput = document.getElementById("input").value;
-  return userInput;
+  let userInput = document.getElementById("input");
+  return userInput.value;
 }
 
 function spinnerOn() {
@@ -43,19 +43,19 @@ function serverCalcFibNum() {
     return false;
   } else {
     spinnerOn();
-    fetch(`http://localhost:5050/fibonacci/${number}`)    
-    .then(function (response) {
+    fetch(`http://localhost:5050/fibonacci/${number}`).then(function (
+      response
+    ) {
       if (response.ok) {
-        return response.json()
-        .then(function (data) {
+        response.json().then(function (data) {
           document.getElementById("result").innerText = data.result;
           spinnerOff();
         });
       } else {
-        response.text()
-        .then((text) => {
-          document.querySelector(".server-error")
-          .innerHTML = `Server error: ${text}`;
+        response.text().then((text) => {
+          document.querySelector(
+            ".server-error"
+          ).innerText = `Server error: ${text}`;
           spinnerOff();
         });
       }
@@ -63,11 +63,10 @@ function serverCalcFibNum() {
   }
 }
 
-function calcFibNumber() {
+function handleOnButtonClick() {
   let btn = document.getElementById("button");
   btn.addEventListener("click", () => {
     let number = getUserInput();
-    console.log(number);
     if (checkBox.checked) {
       serverCalcFibNum();
     } else {
@@ -82,21 +81,51 @@ function getServerFibResults() {
     .then((response) => response.json())
     .then((data) => {
       let { results } = data;
+      console.log(results.length);
 
-      results = results.splice(0, 5);
-
-      let list = document.querySelector(".results-list");
+      results = results.splice(results.length-10, results.length);
 
       for (key in results) {
-        list.innerHTML += `<li class = "list-style">The Fibonacci of: 
-        <b>${results[key].number}</b> 
-        is <b>${results[key].result}</b>. 
-        Calculated at:
-         ${new Date(results[key].createdDate)}</li>`;
+        const wrapperDiv = document.createElement("div");
+        wrapperDiv.classList.add("wrapper");
+
+        const divFib = document.createElement("div");
+        divFib.innerText = "The Fibonacci Of";
+
+        const divNumber = document.createElement("div");
+        divNumber.classList.add("bold");
+        divNumber.classList.add("padding");
+        divNumber.innerHTML = results[key].number;
+
+        const divIs = document.createElement("div");
+        divIs.innerText = "is";
+
+        const divResult = document.createElement("div");
+        divResult.classList.add("bold");
+        divResult.classList.add("padding-left");
+        divResult.innerText = results[key].result;
+
+        const divCalc = document.createElement("div");
+        divCalc.innerText = ". Calculated at: ";
+
+        const divDate = document.createElement("div");
+        divDate.classList.add("padding");
+        divDate.innerHTML = new Date(results[key].createdDate);
+
+        wrapperDiv.append(
+          divFib,
+          divNumber,
+          divIs,
+          divResult,
+          divCalc,
+          divDate
+        );
+        const resultsList = document.getElementById("results-list");
+        resultsList.appendChild(wrapperDiv);
       }
       resultsSpinnerOff();
     });
 }
 
 getServerFibResults();
-calcFibNumber();
+handleOnButtonClick();

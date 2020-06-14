@@ -40,7 +40,6 @@ button {
     color: #373A3C;
 }
 
-
 .alert-box {
     visibility: hidden;
     position: absolute;
@@ -82,7 +81,7 @@ button {
 }
 
 .results-title {
-    font-size: 54px; 
+    font-size: 54px;
     color: #373A3C;
 }
 
@@ -95,11 +94,6 @@ button {
     list-style-type: none;
     /* identical to box height, or 100% */
     color: #373A3C;
-}
-
-
-.show {
-    display: inline-block;
 }
 
 .style-dropdown-menu {
@@ -116,5 +110,32 @@ button {
 }
 
 .display-none {
-    display: none;   
+    display: none;
+}
+
+.show {
+    display: inline-block;
+}
+
+.wrapper {
+    display: flex;
+    font-size: 24px;
+    line-height: 24px;
+    align-items: flex-end;
+    border-bottom: 1px solid black;
+    line-height: 50px;
+
+    color: #373A3C;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.padding-left {
+    padding-left: 5px;
+}
+
+.padding {
+    padding: 0px 5px 0px 5px;
 }
