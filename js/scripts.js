@@ -81,51 +81,47 @@ function getServerFibResults() {
     .then((response) => response.json())
     .then((data) => {
       let { results } = data;
+      const resultsList = document.getElementById("results-list");
       console.log(results.length);
-
-      results = results.splice(results.length-10, results.length);
-
-      for (key in results) {
-        const wrapperDiv = document.createElement("div");
-        wrapperDiv.classList.add("wrapper");
-
-        const divFib = document.createElement("div");
-        divFib.innerText = "The Fibonacci Of";
-
-        const divNumber = document.createElement("div");
-        divNumber.classList.add("bold");
-        divNumber.classList.add("padding");
-        divNumber.innerHTML = results[key].number;
-
-        const divIs = document.createElement("div");
-        divIs.innerText = "is";
-
-        const divResult = document.createElement("div");
-        divResult.classList.add("bold");
-        divResult.classList.add("padding-left");
-        divResult.innerText = results[key].result;
-
-        const divCalc = document.createElement("div");
-        divCalc.innerText = ". Calculated at: ";
-
-        const divDate = document.createElement("div");
-        divDate.classList.add("padding");
-        divDate.innerHTML = new Date(results[key].createdDate);
-
-        wrapperDiv.append(
-          divFib,
-          divNumber,
-          divIs,
-          divResult,
-          divCalc,
-          divDate
-        );
-        const resultsList = document.getElementById("results-list");
-        resultsList.appendChild(wrapperDiv);
+      results = results.splice(results.length - 10, results.length);
+      for (element of results) {
+        let newElement = createLiElement(element);
+        console.log(newElement)
+        resultsList.appendChild(newElement);
       }
       resultsSpinnerOff();
     });
 }
 
+function createLiElement(element) {
+  const wrapperDiv = document.createElement("div");
+  wrapperDiv.classList.add("wrapper");
+
+  const divFib = document.createElement("div");
+  divFib.innerText = "The Fibonacci Of";
+
+  const divNumber = document.createElement("div");
+  divNumber.classList.add("bold");
+  divNumber.classList.add("padding");
+  divNumber.innerHTML = element.number;
+
+  const divIs = document.createElement("div");
+  divIs.innerText = "is";
+
+  const divResult = document.createElement("div");
+  divResult.classList.add("bold");
+  divResult.classList.add("padding-left");
+  divResult.innerText = element.result;
+
+  const divCalc = document.createElement("div");
+  divCalc.innerText = ". Calculated at: ";
+
+  const divDate = document.createElement("div");
+  divDate.classList.add("padding");
+  divDate.innerHTML = new Date(element.createdDate);
+
+  wrapperDiv.append(divFib, divNumber, divIs, divResult, divCalc, divDate);
+  return wrapperDiv;
+}
 getServerFibResults();
 handleOnButtonClick();
