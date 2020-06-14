@@ -1,5 +1,5 @@
-const loader = document.querySelector(".loader-ring");
-const resultsLoader = document.querySelector(".results-loader-ring");
+const spinner = document.getElementById("spinner");
+const resultsSpinner = document.querySelector("results-spinner");
 const checkBox = document.getElementById("checkbox");
 
 function getUserInput() {
@@ -7,20 +7,20 @@ function getUserInput() {
   return userInput;
 }
 
-function loaderOn() {
-  loader.classList.add("show");
+function spinnerOn() {
+  spinner.classList.add("show");
 }
 
-function loaderOff() {
-  loader.classList.remove("show");
+function spinnerOff() {
+  spinner.classList.remove("show");
 }
 
-function resultsLoaderOn() {
-  resultsLoader.classList.add("show");
+function resultsSpinnerOn() {
+  resultsSpinner.classList.add("show");
 }
 
-function resultsLoaderOff() {
-  resultsLoader.classList.remove("show");
+function resultsSpinnerOff() {
+  resultsSpinner.classList.remove("show");
 }
 
 function localCalcFibNum(num) {
@@ -42,21 +42,21 @@ function serverCalcFibNum() {
     document.getElementById("input").classList.add("border-red");
     return false;
   } else {
-    loaderOn();
+    spinnerOn();
     fetch(`http://localhost:5050/fibonacci/${number}`)    
     .then(function (response) {
       if (response.ok) {
         return response.json()
         .then(function (data) {
           document.getElementById("result").innerText = data.result;
-          loaderOff();
+          spinnerOff();
         });
       } else {
         response.text()
         .then((text) => {
           document.querySelector(".server-error")
           .innerHTML = `Server error: ${text}`;
-          loaderOff();
+          spinnerOff();
         });
       }
     });
@@ -77,7 +77,7 @@ function calcFibNumber() {
 }
 
 function getServerFibResults() {
-  resultsLoaderOn();
+  resultsSpinnerOn();
   fetch(`http://localhost:5050/getFibonacciResults`)
     .then((response) => response.json())
     .then((data) => {
@@ -94,7 +94,7 @@ function getServerFibResults() {
         Calculated at:
          ${new Date(results[key].createdDate)}</li>`;
       }
-      resultsLoaderOff();
+      resultsSpinnerOff();
     });
 }
 
