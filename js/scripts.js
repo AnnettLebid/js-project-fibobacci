@@ -65,7 +65,7 @@ function serverCalcFibNum() {
 
 function calcFibNumber() {
   let btn = document.getElementById("button");
-  btn.addEventListener("click", function () {
+  btn.addEventListener("click", () => {
     let number = getUserInput();
     console.log(number);
     if (checkBox.checked) {

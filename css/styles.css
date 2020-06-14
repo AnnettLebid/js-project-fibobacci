@@ -15,9 +15,13 @@ h2 {
     color: #373A3C;
 }
 
-h5 {
+button {
+    width: 39px;
+    height: 38px;
+}
+
+.fib-title {
     font-size: 24px;
-    line-height: 24px;
     color: #373A3C;
 }
 
@@ -197,9 +201,9 @@ h5 {
 .style-dropdown-menu {
     width: 122px;
     height: 38px;
-    
+
     font-size: 16px;
-    line-height: 21px;        
+    line-height: 21px;
     color: #373A3C;
     background: #E6E6E6;
     border: 1px solid #CCCCCC;
