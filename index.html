@@ -25,27 +25,28 @@
           <input type="number" id="input" class="input m-1 d-inline" placeholder="#">
           <button type="button" id="button" class="btn btn-primary ml-1 mr-2 align-self-center">Is</button>
           <span class="result" id="result"></span>
-          <div class="justify-content-center align-self-center loader-ring">
+          <div class="justify-content-center align-self-center display-none">
             <div class="spinner-border" role="status">
               <span class="sr-only">Loading...</span>
             </div>
           </div>
-          </div>
+        </div>
         <div class="p-2">
           <input type="checkbox" id="checkbox" />
-          <label for="checkbox">Save Calculation</label></div>  
+          <label for="checkbox">Save Calculation</label></div>
         <div class="alert alert-danger alert-box p-1" role="alert" id="alert-box">
           Can’t be larger than 50
         </div>
         <div class="server-error"></div>
-        <div class="results-title">Results</div>
-        <div class="results-loader-ring">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
+        <div class="d-flex mb-1 mt-5">
+          <div class="results-title">Results</div>         
+          <div class="align-self-center ml-2 mt-2 display-none">
+            <div class="spinner-border align-bottom" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
         </div>
-        <div class="dropdown mb-5">
+        <div class="dropdown mb-5 mt-1">
           <button class="btn btn-secondary dropdown-toggle style-dropdown-menu" type="button" id="dropdownMenuButton"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Sort By
