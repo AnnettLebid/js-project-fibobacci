@@ -1,6 +1,7 @@
 const spinner = document.getElementById("spinner");
 const resultsSpinner = document.getElementById("results-spinner");
 const checkBox = document.getElementById("checkbox");
+const calcResult = document.getElementById("result");
 
 function getUserInput() {
   let userInput = document.getElementById("input");
@@ -23,6 +24,10 @@ function resultsSpinnerOff() {
   resultsSpinner.classList.remove("show");
 }
 
+function clearResult() {
+  calcResult.innerHTML = "";
+}
+
 function localCalcFibNum(num) {
   let prevNum1 = 0,
     prevNum2 = 1;
@@ -32,21 +37,20 @@ function localCalcFibNum(num) {
     prevNum1 = prevNum2;
     prevNum2 = result;
   }
-  document.getElementById("result").innerText = result;
+  calcResult.innerText = result;
 }
 
-function serverCalcFibNum(num) {  
+function serverCalcFibNum(num) {
   if (num > 50) {
     document.getElementById("alert-box").classList.add("visibility");
     document.getElementById("input").classList.add("border-red");
     return false;
   } else {
     spinnerOn();
-    fetch(`http://localhost:5050/fibonacci/${num}`)
-    .then(function (response) {
+    fetch(`http://localhost:5050/fibonacci/${num}`).then(function (response) {
       if (response.ok) {
         response.json().then(function (data) {
-          document.getElementById("result").innerText = data.result;
+          calcResult.innerText = data.result;
           spinnerOff();
         });
       } else {
@@ -61,10 +65,11 @@ function serverCalcFibNum(num) {
   }
 }
 
-
 function handleOnButtonClick() {
+  
   let btn = document.getElementById("button");
   btn.addEventListener("click", () => {
+    clearResult();
     let number = getUserInput();
     if (checkBox.checked) {
       serverCalcFibNum(number);
@@ -74,7 +79,6 @@ function handleOnButtonClick() {
   });
 }
 
-
 function getServerFibResults() {
   resultsSpinnerOn();
   fetch(`http://localhost:5050/getFibonacciResults`)
@@ -82,11 +86,9 @@ function getServerFibResults() {
     .then((data) => {
       let { results } = data;
       const resultsList = document.getElementById("results-list");
-      console.log(results.length);
-      results = results.splice(results.length - 10, results.length);
+      results = results.splice(1, 10);
       for (element of results) {
         let newElement = createLiElement(element);
-        console.log(newElement);
         resultsList.appendChild(newElement);
       }
       resultsSpinnerOff();
@@ -123,7 +125,6 @@ function createLiElement(element) {
   wrapperDiv.append(divFib, divNumber, divIs, divResult, divCalc, divDate);
   return wrapperDiv;
 }
-
 
 getServerFibResults();
 handleOnButtonClick();
