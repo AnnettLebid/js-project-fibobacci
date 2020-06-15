@@ -40,7 +40,7 @@ function localCalcFibNum(num) {
   calcResult.innerText = result;
 }
 
-function serverCalcFibNum(num) {
+function serverCalcFibNum(num, callback) {
   if (num > 50) {
     document.getElementById("alert-box").classList.add("visibility");
     document.getElementById("input").classList.add("border-red");
@@ -62,31 +62,53 @@ function serverCalcFibNum(num) {
         });
       }
     });
+  }  
+}
+
+
+function isChecked (number) {
+  if (checkBox.checked) {
+    serverCalcFibNum(number);
+    getServerFibResults();
+  } else {
+    localCalcFibNum(number);
   }
 }
 
 function handleOnButtonClick() {
-  
   let btn = document.getElementById("button");
   btn.addEventListener("click", () => {
     clearResult();
     let number = getUserInput();
-    if (checkBox.checked) {
-      serverCalcFibNum(number);
-    } else {
-      localCalcFibNum(number);
-    }
+    isChecked (number);  
   });
 }
+
+// // function checkDropmenu () {
+//   let dropMenuItem = document.getElementById("dropdown-item");
+//   dropMenuItem.click( () => console.log(this.text));
+
+//
+
+// checkDropmenu ();
 
 function getServerFibResults() {
   resultsSpinnerOn();
   fetch(`http://localhost:5050/getFibonacciResults`)
     .then((response) => response.json())
     .then((data) => {
+      console.log(data);
+      data.results.sort((el1, el2) => {
+        if (el1.createdDate < el2.createdDate) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
       let { results } = data;
+
       const resultsList = document.getElementById("results-list");
-      results = results.splice(1, 10);
+      // results = results.splice(1, 10);
       for (element of results) {
         let newElement = createLiElement(element);
         resultsList.appendChild(newElement);
