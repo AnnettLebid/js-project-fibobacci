@@ -40,7 +40,7 @@ function localCalcFibNum(num) {
   calcResult.innerText = result;
 }
 
-function serverCalcFibNum(num) {
+function serverCalcFibNum(num, callback) {
   if (num > 50) {
     document.getElementById("alert-box").classList.add("visibility");
     document.getElementById("input").classList.add("border-red");
@@ -83,25 +83,6 @@ function handleOnButtonClick() {
   });
 }
 
-// function checkDropMenu () {
-//   let selection = document.querySelector("select");
-
-//   selection.addEventListener("change", () => {
-//     let selectedItem = selection.options[selection.selectedIndex].text;
-//     console.log(selectedItem);
-//     return selectedItem;
-//   })
-// }
-
-function checkDropMenu() {
-  let selection = document.querySelector("select");
-  let selectedItem = selection.options[selection.selectedIndex].text;
-  // console.log(selectedItem);
-  return selectedItem;
-}
-
-checkDropMenu();
-
 // // function checkDropmenu () {
 //   let dropMenuItem = document.getElementById("dropdown-item");
 //   dropMenuItem.click( () => console.log(this.text));
@@ -115,22 +96,20 @@ function getServerFibResults() {
   fetch(`http://localhost:5050/getFibonacciResults`)
     .then((response) => response.json())
     .then((data) => {
-      // let optionChosen = checkDropMenu();
-      // console.log(optionChosen);
       // grab the option
       // enter it into a switch that will return a new sorted array
 
-      // const optionChosen = "By Date Asc"; //function
-      // const sorted = runProperSort(data, optionChosen);
-      data.results.sort((el1, el2) => {
-        if (el1.number > el2.number) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
-       let { results } = data;
-      // let { results } = sorted;
+      const optionChosen = "By Date Asc"; //function
+      const sorted = runProperSort(data, optionChosen);
+      // data.results.sort((el1, el2) => {
+      //   if (el1.createdDate < el2.createdDate) {
+      //     return 1;
+      //   } else {
+      //     return -1;
+      //   }
+      // });
+
+      let { results } = sorted;
       const resultsList = document.getElementById("results-list");
       // results = results.splice(1, 10);
       for (element of results) {
@@ -145,16 +124,10 @@ function runProperSort(myArray, optionChosen) {
   let sortedArray;
   switch (optionChosen) {
     case "By Date Asc":
-      sortedArray = sortDateAsk(myArray);
+      sortedArray = sortDateDesk(myArray);
       break;
     default:
       sortedArray = sortDateDesk(myArray);
-      break;
-    case "dateAsc":
-      sortedArray = sortDateAsk(myArray);
-      break;
-    case "dateDesc":
-      sortedArray = sortDateAsk(myArray);
       break;
   }
   return sortedArray;
@@ -191,32 +164,27 @@ function createLiElement(element) {
   return wrapperDiv;
 }
 
-// let array = array.results;
+let array = array.lesults;
 
-function sortDateDesk(array) {   //decreasing order
-  return array.sort((el1, el2) => 
-  (el1.createdDate < el2.createdDate) ? 1: -1)
+function sortDateDesk(array) {
+  return array.sort((el1, el2) => {
+    if (el1.createdDate < el2.createdDate) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
 }
 
-
-
-function sortDateAsk(array) {    //increasing order
-  return array.sort((el1, el2) => 
-  (el1.createdDate > el2.createdDate) ? 1: -1)
+function sortDateAsk(array) {
+  return array.sort((el1, el2) => {
+    if (el1.createdDate < el2.createdDate) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
 }
-
-
-function sortnumberAsk(array) {   //increasing order
-  return array.sort((el1, el2) => 
-  (el1.number > el2.number) ? 1: -1)
-}
-
-
-function sortnumberDesk(array) {  //decreasing order
-  return array.sort((el1, el2) => 
-  (el1.number < el2.number) ? 1: -1)
-}
-
 
 getServerFibResults();
 handleOnButtonClick();
