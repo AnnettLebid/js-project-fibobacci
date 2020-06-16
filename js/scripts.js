@@ -2,10 +2,10 @@ const spinner = document.getElementById("spinner");
 const resultsSpinner = document.getElementById("results-spinner");
 const checkBox = document.getElementById("checkbox");
 const calcResult = document.getElementById("result");
+const userInputElement = document.getElementById("input");
 
-function getUserInput() {
-  let userInput = document.getElementById("input");
-  return userInput.value;
+function getUserInput() { 
+  return userInputElement.value;
 }
 
 function spinnerOn() {
@@ -40,6 +40,7 @@ function localCalcFibNum(num) {
   calcResult.innerText = result;
 }
 
+
 function serverCalcFibNum(num) {
   if (num > 50) {
     document.getElementById("alert-box").classList.add("visibility");
@@ -65,14 +66,6 @@ function serverCalcFibNum(num) {
   }
 }
 
-function isChecked(number) {
-  if (checkBox.checked) {
-    serverCalcFibNum(number);
-    getServerFibResults();
-  } else {
-    localCalcFibNum(number);
-  }
-}
 
 function handleOnButtonClick() {
   let btn = document.getElementById("button");
@@ -83,32 +76,26 @@ function handleOnButtonClick() {
   });
 }
 
-// function checkDropMenu () {
-//   let selection = document.querySelector("select");
 
-//   selection.addEventListener("change", () => {
-//     let selectedItem = selection.options[selection.selectedIndex].text;
-//     console.log(selectedItem);
-//     return selectedItem;
-//   })
-// }
-
-function checkDropMenu() {
-  let selection = document.querySelector("select");
-  let selectedItem = selection.options[selection.selectedIndex].text;
-  // console.log(selectedItem);
-  return selectedItem;
+function isChecked(number) {
+  if (checkBox.checked) {
+    serverCalcFibNum(number);
+    getServerFibResults();    
+  } else {
+    localCalcFibNum(number);
+  }
 }
 
-checkDropMenu();
 
-// // function checkDropmenu () {
-//   let dropMenuItem = document.getElementById("dropdown-item");
-//   dropMenuItem.click( () => console.log(this.text));
+function checkDropMenu () {
+  let selection = document.querySelector("select");
 
-//
-
-// checkDropmenu ();
+  selection.addEventListener("change", () => {
+    let selectedItem = selection.options[selection.selectedIndex].text;
+    console.log(selectedItem);
+    return selectedItem;
+  })
+}
 
 function getServerFibResults() {
   resultsSpinnerOn();
@@ -122,21 +109,30 @@ function getServerFibResults() {
 
       // const optionChosen = "By Date Asc"; //function
       // const sorted = runProperSort(data, optionChosen);
-      data.results.sort((el1, el2) => {
-        if (el1.number > el2.number) {
-          return 1;
-        } else {
-          return -1;
-        }
-      });
-       let { results } = data;
+      // data.results.sort((el1, el2) => {
+      //   if (el1.number > el2.number) {
+      //     return 1;
+      //   } else {
+      //     return -1;
+      //   }
+      // });
+      let { results } = data;
+      console.log(results);
+      sortDateDesk(results);
+
+      
       // let { results } = sorted;
+      let obtainedResults = '';
       const resultsList = document.getElementById("results-list");
       // results = results.splice(1, 10);
       for (element of results) {
-        let newElement = createLiElement(element);
-        resultsList.appendChild(newElement);
+        obtainedResults += `
+        <li class = "list-style">The Fibonacci of: <b>${element.number}</b> 
+        is <b>${element.result}</b>. 
+        Calculated at:
+         ${new Date(element.createdDate)}</li> `;       
       }
+      resultsList.innerHTML = obtainedResults;
       resultsSpinnerOff();
     });
 }
@@ -160,36 +156,7 @@ function runProperSort(myArray, optionChosen) {
   return sortedArray;
 }
 
-function createLiElement(element) {
-  const wrapperDiv = document.createElement("div");
-  wrapperDiv.classList.add("wrapper");
 
-  const divFib = document.createElement("div");
-  divFib.innerText = "The Fibonacci Of";
-
-  const divNumber = document.createElement("div");
-  divNumber.classList.add("bold");
-  divNumber.classList.add("padding");
-  divNumber.innerHTML = element.number;
-
-  const divIs = document.createElement("div");
-  divIs.innerText = "is";
-
-  const divResult = document.createElement("div");
-  divResult.classList.add("bold");
-  divResult.classList.add("padding-left");
-  divResult.innerText = element.result;
-
-  const divCalc = document.createElement("div");
-  divCalc.innerText = ". Calculated at: ";
-
-  const divDate = document.createElement("div");
-  divDate.classList.add("padding");
-  divDate.innerHTML = new Date(element.createdDate);
-
-  wrapperDiv.append(divFib, divNumber, divIs, divResult, divCalc, divDate);
-  return wrapperDiv;
-}
 
 // let array = array.results;
 
@@ -197,7 +164,6 @@ function sortDateDesk(array) {   //decreasing order
   return array.sort((el1, el2) => 
   (el1.createdDate < el2.createdDate) ? 1: -1)
 }
-
 
 
 function sortDateAsk(array) {    //increasing order
@@ -220,3 +186,46 @@ function sortnumberDesk(array) {  //decreasing order
 
 getServerFibResults();
 handleOnButtonClick();
+checkDropMenu();
+
+
+
+
+
+
+
+
+
+
+
+
+// function createLiElement(element) {
+//   const wrapperDiv = document.createElement("div");
+//   wrapperDiv.classList.add("wrapper");
+
+//   const divFib = document.createElement("div");
+//   divFib.innerText = "The Fibonacci Of";
+
+//   const divNumber = document.createElement("div");
+//   divNumber.classList.add("bold");
+//   divNumber.classList.add("padding");
+//   divNumber.innerHTML = element.number;
+
+//   const divIs = document.createElement("div");
+//   divIs.innerText = "is";
+
+//   const divResult = document.createElement("div");
+//   divResult.classList.add("bold");
+//   divResult.classList.add("padding-left");
+//   divResult.innerText = element.result;
+
+//   const divCalc = document.createElement("div");
+//   divCalc.innerText = ". Calculated at: ";
+
+//   const divDate = document.createElement("div");
+//   divDate.classList.add("padding");
+//   divDate.innerHTML = new Date(element.createdDate);
+
+//   wrapperDiv.append(divFib, divNumber, divIs, divResult, divCalc, divDate);
+//   return wrapperDiv;
+// }
