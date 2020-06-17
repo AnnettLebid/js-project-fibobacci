@@ -3,29 +3,35 @@ const resultsSpinner = document.getElementById("results-spinner");
 const checkBox = document.getElementById("checkbox");
 const calcResult = document.getElementById("result");
 const userInputElement = document.getElementById("input");
+const alertBox = document.getElementById("alert-box");
+const serverErrorMsg = document.getElementById("server-error");
+let selection = document.querySelector("select");
 
-function getUserInput() { 
+function getUserInput() {
   return userInputElement.value;
 }
 
 function spinnerOn() {
-  spinner.classList.add("show");
+  spinner.classList.remove("d-none");
 }
 
 function spinnerOff() {
-  spinner.classList.remove("show");
+  spinner.classList.add("d-none");
 }
 
 function resultsSpinnerOn() {
-  resultsSpinner.classList.add("show");
+  resultsSpinner.classList.remove("d-none");
 }
 
 function resultsSpinnerOff() {
-  resultsSpinner.classList.remove("show");
+  resultsSpinner.classList.add("d-none");
 }
 
 function clearResult() {
+  alertBox.classList.add("d-none");
+  userInputElement.classList.remove("border-red");
   calcResult.innerHTML = "";
+  serverErrorMsg.innerText = "";
 }
 
 function localCalcFibNum(num) {
@@ -40,11 +46,10 @@ function localCalcFibNum(num) {
   calcResult.innerText = result;
 }
 
-
 function serverCalcFibNum(num) {
   if (num > 50) {
-    document.getElementById("alert-box").classList.add("visibility");
-    document.getElementById("input").classList.add("border-red");
+    alertBox.classList.remove("d-none");
+    userInputElement.classList.add("border-red");
     return false;
   } else {
     spinnerOn();
@@ -66,7 +71,6 @@ function serverCalcFibNum(num) {
   }
 }
 
-
 function handleOnButtonClick() {
   let btn = document.getElementById("button");
   btn.addEventListener("click", () => {
@@ -76,53 +80,31 @@ function handleOnButtonClick() {
   });
 }
 
-
 function isChecked(number) {
   if (checkBox.checked) {
     serverCalcFibNum(number);
-    getServerFibResults();    
+    getServerFibResults();
   } else {
     localCalcFibNum(number);
   }
 }
 
-
-function checkDropMenu () {
-  let selection = document.querySelector("select");
-
-  selection.addEventListener("change", () => {
-    let selectedItem = selection.options[selection.selectedIndex].text;
-    console.log(selectedItem);
-    return selectedItem;
-  })
-}
+let selectedItem;
+selection.addEventListener("change", () => {
+  selectedItem = selection.options[selection.selectedIndex].text;
+  console.log(selectedItem);
+  getServerFibResults();
+});
 
 function getServerFibResults() {
   resultsSpinnerOn();
   fetch(`http://localhost:5050/getFibonacciResults`)
     .then((response) => response.json())
-    .then((data) => {
-      // let optionChosen = checkDropMenu();
-      // console.log(optionChosen);
-      // grab the option
-      // enter it into a switch that will return a new sorted array
-
-      // const optionChosen = "By Date Asc"; //function
-      // const sorted = runProperSort(data, optionChosen);
-      // data.results.sort((el1, el2) => {
-      //   if (el1.number > el2.number) {
-      //     return 1;
-      //   } else {
-      //     return -1;
-      //   }
-      // });
+    .then((data) => {      
       let { results } = data;
-      console.log(results);
-      sortDateDesk(results);
+      runProperSort(results, selectedItem);     
 
-      
-      // let { results } = sorted;
-      let obtainedResults = '';
+      let obtainedResults = "";
       const resultsList = document.getElementById("results-list");
       // results = results.splice(1, 10);
       for (element of results) {
@@ -130,7 +112,7 @@ function getServerFibResults() {
         <li class = "list-style">The Fibonacci of: <b>${element.number}</b> 
         is <b>${element.result}</b>. 
         Calculated at:
-         ${new Date(element.createdDate)}</li> `;       
+         ${new Date(element.createdDate)}</li> `;
       }
       resultsList.innerHTML = obtainedResults;
       resultsSpinnerOff();
@@ -140,92 +122,40 @@ function getServerFibResults() {
 function runProperSort(myArray, optionChosen) {
   let sortedArray;
   switch (optionChosen) {
-    case "By Date Asc":
+    case "Date Ask":
       sortedArray = sortDateAsk(myArray);
       break;
     default:
       sortedArray = sortDateDesk(myArray);
       break;
-    case "dateAsc":
-      sortedArray = sortDateAsk(myArray);
+    case "Number Desk":
+      sortedArray = sortnumberDesk(myArray);
       break;
-    case "dateDesc":
-      sortedArray = sortDateAsk(myArray);
+    case "Number Ask":
+      sortedArray = sortnumberAsk(myArray);
       break;
   }
   return sortedArray;
 }
 
-
-
-// let array = array.results;
-
-function sortDateDesk(array) {   //decreasing order
-  return array.sort((el1, el2) => 
-  (el1.createdDate < el2.createdDate) ? 1: -1)
+function sortDateDesk(array) {
+  return array.sort((el1, el2) => (el1.createdDate < el2.createdDate ? 1 : -1));
 }
 
-
-function sortDateAsk(array) {    //increasing order
-  return array.sort((el1, el2) => 
-  (el1.createdDate > el2.createdDate) ? 1: -1)
+function sortDateAsk(array) {
+  return array.sort((el1, el2) => (el1.createdDate > el2.createdDate ? 1 : -1));
 }
 
-
-function sortnumberAsk(array) {   //increasing order
-  return array.sort((el1, el2) => 
-  (el1.number > el2.number) ? 1: -1)
+function sortnumberAsk(array) {
+  return array.sort((el1, el2) => (el1.number > el2.number ? 1 : -1));
 }
 
-
-function sortnumberDesk(array) {  //decreasing order
-  return array.sort((el1, el2) => 
-  (el1.number < el2.number) ? 1: -1)
+function sortnumberDesk(array) {
+  return array.sort((el1, el2) => (el1.number < el2.number ? 1 : -1));
 }
 
+window.onload = function () {
+  getServerFibResults();
+  handleOnButtonClick();
+};
 
-getServerFibResults();
-handleOnButtonClick();
-checkDropMenu();
-
-
-
-
-
-
-
-
-
-
-
-
-// function createLiElement(element) {
-//   const wrapperDiv = document.createElement("div");
-//   wrapperDiv.classList.add("wrapper");
-
-//   const divFib = document.createElement("div");
-//   divFib.innerText = "The Fibonacci Of";
-
-//   const divNumber = document.createElement("div");
-//   divNumber.classList.add("bold");
-//   divNumber.classList.add("padding");
-//   divNumber.innerHTML = element.number;
-
-//   const divIs = document.createElement("div");
-//   divIs.innerText = "is";
-
-//   const divResult = document.createElement("div");
-//   divResult.classList.add("bold");
-//   divResult.classList.add("padding-left");
-//   divResult.innerText = element.result;
-
-//   const divCalc = document.createElement("div");
-//   divCalc.innerText = ". Calculated at: ";
-
-//   const divDate = document.createElement("div");
-//   divDate.classList.add("padding");
-//   divDate.innerHTML = new Date(element.createdDate);
-
-//   wrapperDiv.append(divFib, divNumber, divIs, divResult, divCalc, divDate);
-//   return wrapperDiv;
-// }
