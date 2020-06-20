@@ -3,60 +3,52 @@
 
   getDomElements();
   getServerFibResults();
-  handleOnButtonClick();
 
-  function getDomElements(){
+  function getDomElements() {
+    fibonacciproj.input;
     fibonacciproj.spinner = document.getElementById("spinner");
-    fibonacciproj.resultsSpinner = document.getElementById("results-spinner");   
+    fibonacciproj.resultsSpinner = document.getElementById("results-spinner");
     fibonacciproj.checkBox = document.getElementById("checkbox");
     fibonacciproj.calcResult = document.getElementById("result");
     fibonacciproj.userInputElement = document.getElementById("input");
     fibonacciproj.alertBox = document.getElementById("alert-box");
     fibonacciproj.serverErrorMsg = document.getElementById("server-error");
     fibonacciproj.selection = document.querySelector("select");
-  }
-
-  function getUserInput() {
-    const { userInputElement, serverErrorMsg } = fibonacciproj;
-    let userInput = userInputElement.value;
-    if (userInput < 0) {
-      serverErrorMsg.innerText = "Number can't be smaller than 1!";
-      return false;
-    }
-    return userInput;
-  }
-
-  function spinnerOn() {
-    const { spinner } = fibonacciproj;
-    spinner.classList.remove("d-none");
-  }
-
-  function spinnerOff() {
-    const { spinner } = fibonacciproj;
-    spinner.classList.add("d-none");
-  }
-
-  function resultsSpinnerOn() {
-    const { resultsSpinner } = fibonacciproj;
-    resultsSpinner.classList.remove("d-none");
-  }
-
-  function resultsSpinnerOff() {
-    const { resultsSpinner } = fibonacciproj;
-    resultsSpinner.classList.add("d-none");
+    fibonacciproj.button = document
+      .getElementById("button")
+      .addEventListener("click", () => {
+        clearResult();
+        isChecked(getUserInput());
+      });
   }
 
   function clearResult() {
-    const { alertBox, userInputElement, calcResult, serverErrorMsg } = fibonacciproj;
+    const {
+      alertBox,
+      userInputElement,
+      calcResult,
+      serverErrorMsg,
+    } = fibonacciproj;
     alertBox.classList.add("d-none");
     userInputElement.classList.remove("border-red");
     calcResult.innerHTML = "";
     serverErrorMsg.innerText = "";
   }
 
-  function localCalcFibNum(num) {
+  function getUserInput() {
+    const { userInputElement } = fibonacciproj;
+    let userInput = userInputElement.value;
+    return userInput;
+  }
+
+  const localCalcFibNum = (num) => {
     const { calcResult } = fibonacciproj;
-    if (num > 0) {
+    clearResult();
+    if (num < 0) {
+      calcResult.innerText = "Number can't be smaller than 0!";
+    } else if (num === "0") {
+      calcResult.innerHTML = 0;
+    } else {
       let prevNum1 = 0,
         prevNum2 = 1;
       let result = 1;
@@ -65,44 +57,46 @@
         prevNum1 = prevNum2;
         prevNum2 = result;
       }
-      calcResult.innerText = result;
+      calcResult.innerHTML = result;
     }
-  }
+  };
 
-  function serverCalcFibNum(num) {
-    const { alertBox, userInputElement, calcResult } = fibonacciproj;
-    if (num > 50) {      
+  async function serverCalcFibNum(num) {
+    const {
+      alertBox,
+      userInputElement,
+      calcResult,
+      serverErrorMsg,
+      spinner,
+    } = fibonacciproj;
+    if (num === "") {
+      serverErrorMsg.innerText = "Please, input a number!";
+    } else if (num > 50) {
       alertBox.classList.remove("d-none");
       userInputElement.classList.add("border-red");
       return false;
     } else {
-      spinnerOn();
-      fetch(`http://localhost:5050/fibonacci/${num}`).then(function (response) {
-        if (response.ok) {
-          response.json().then(function (data) {
-            calcResult.innerText = data.result;
-            spinnerOff();
-          });
-        } else {
-          response.text().then((text) => {
-            document.querySelector(
-              ".server-error"
-            ).innerText = `Server error: ${text}`;
-            spinnerOff();
-          });
-        }
-      });
+      toggleSpinner(spinner);
+      // spinnerOn();
+      const response = await fetch(`http://localhost:5050/fibonacci/${num}`);
+      if (response.ok) {
+        const data = await response.json();
+        calcResult.innerText = data.result;
+        toggleSpinner(spinner);
+      } else {
+        const errResponse = await response.text();
+        serverErrorMsg.innerText = `Server error: ${errResponse}`;
+        toggleSpinner(spinner);
+      }
     }
   }
 
-  function handleOnButtonClick() {
-    let btn = document.getElementById("button");
-    btn.addEventListener("click", () => {
-      clearResult();
-      let number = getUserInput();
-      isChecked(number);
-    });
-  }
+  let selectedItem;
+  const { selection } = fibonacciproj;
+  selection.addEventListener("change", () => {
+    selectedItem = selection.options[selection.selectedIndex].text;
+    getServerFibResults();
+  });
 
   function isChecked(number) {
     const { checkBox } = fibonacciproj;
@@ -114,35 +108,28 @@
     }
   }
 
-  let selectedItem;
-  const { selection } = fibonacciproj;
-  selection.addEventListener("change", () => {
-    selectedItem = selection.options[selection.selectedIndex].text;
-    console.log(selectedItem);
-    getServerFibResults();
-  });
+  async function getServerFibResults() {
+    const { resultsSpinner } = fibonacciproj;
+    toggleSpinner(resultsSpinner);
 
-  function getServerFibResults() {
-    resultsSpinnerOn();
-    fetch(`http://localhost:5050/getFibonacciResults`)
-      .then((response) => response.json())
-      .then((data) => {
-        let { results } = data;
-        runProperSort(results, selectedItem);
+    const response = await fetch(`http://localhost:5050/getFibonacciResults`);
+    const data = await response.json();
 
-        let obtainedResults = "";
-        const resultsList = document.getElementById("results-list");
-        // results = results.splice(1, 10);
-        for (element of results) {
-          obtainedResults += `
+    let { results } = data;
+
+    runProperSort(results, selectedItem);
+
+    let obtainedResults = "";
+    const resultsList = document.getElementById("results-list");
+    for (element of results) {
+      obtainedResults += `
         <li class = "list-style">The Fibonacci of: <b>${element.number}</b> 
         is <b>${element.result}</b>. 
         Calculated at:
          ${new Date(element.createdDate)}</li> `;
-        }
-        resultsList.innerHTML = obtainedResults;
-        resultsSpinnerOff();
-      });
+    }
+    resultsList.innerHTML = obtainedResults;
+    toggleSpinner(resultsSpinner);
   }
 
   function runProperSort(myArray, optionChosen) {
@@ -182,6 +169,10 @@
 
   function sortnumberDesk(array) {
     return array.sort((el1, el2) => (el1.number < el2.number ? 1 : -1));
+  }
+  
+  function toggleSpinner(domElement) {
+    domElement.classList.toggle("d-none");
   }
 
 })();

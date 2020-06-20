@@ -91,7 +91,7 @@ button {
 }
 
 .style-dropdown-menu {
-    width: 130px;
+    width: 140px;
     height: 38px;
 
     font-size: 16px;
@@ -122,21 +122,4 @@ button {
     padding: 0px 5px;
 }
 
-.dropdown {
-	background: #e6e6e6;
-	border: 1px solid #cccccc;
-	box-sizing: border-box;
-	border-radius: 4px;
-	width: 122px;
-	height: 38px;
-}
-
-.dropdown .drop-item {
-	width: 155px;
-	height: 42px;
-	background: #ffffff;
-	border: 1px solid #cccccc;
-}
-
-/*   */
 
